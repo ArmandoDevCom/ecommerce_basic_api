@@ -32,4 +32,56 @@ const registrarUsuario = async (req, res) => {
     }
 };
 
-module.exports = {registrarUsuario}
+const iniciarSesion = async (req, res) => {
+    
+    const { user_name, password } = req.body;
+
+    const user = await User.findOne({user_name: user_name});
+
+    if (!user) {
+        return res.status(400).json({
+            ok: false,
+            msg: "Usuario y/o contraseña incorretos.",
+            data: {},
+        })
+    }
+
+    const validPassword = bcrypt.compareSync(password, user.password);
+
+    if (!validPassword) {
+        return res.status(400).json({
+            ok: false,
+            msg: "Usuario y/o contraseña incorretos.",
+            data: {},
+        })
+    }
+
+    const token = await generarJWT(user.id);
+
+    return res.json({
+        ok: true,
+        msg: "Acceso correcto",
+        data: user,
+        token: token,
+    });
+};
+
+const validarUsuario = async (req, res) => {
+
+        const user = req.user;
+
+        const token = await generarJWT(user.id);
+
+        return res.json({
+            ok: true,
+            msg: "Usuario validado",
+            data: user,
+            token: token,
+        });
+    }
+
+module.exports = {
+    registrarUsuario,
+    iniciarSesion,
+    validarUsuario,
+}
