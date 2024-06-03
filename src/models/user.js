@@ -28,6 +28,10 @@ const UserSchema = Schema({
     phone: {
         type: String,
     }
+
+    email: {
+        type: String,
+    }
 });
 
 UserSchema.methods.toJSON = function () {
