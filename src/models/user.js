@@ -32,6 +32,7 @@ const UserSchema = Schema({
     mail: {
         type: String,
     }
+
 });
 
 UserSchema.methods.toJSON = function () {
