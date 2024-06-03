@@ -27,6 +27,10 @@ const UserSchema = Schema({
 
     phone: {
         type: String,
+    },
+
+    mail: {
+        type: String,
     }
 });
 
